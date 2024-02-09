@@ -1,3 +1,5 @@
+import java.awt.*;
+import java.awt.event.WindowAdapter;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -9,16 +11,33 @@ import java.net.URL;
 // video to load jar
 //https://www.youtube.com/watch?v=QAJ09o3Xl_0
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import javax.swing.*;
+import java.awt.GridLayout;
+
+
+import java.awt.event.ActionEvent;
+
 // Program for print data in JSON format.
 public class ReadJson {
+    /*private JLabel allies;
+    private JFrame mainFrame;
+    private JLabel characters;
+    private JPanel controlPanel;
+    private int WIDTH = 800;
+    private int HEIGHT = 700;*/
+    public static JLabel characters,allies;
+
     public static void main(String args[]) throws ParseException {
         // In java JSONObject is used to create JSON object
         // which is a subclass of java.util.HashMap.
 
+      //  ReadJson swingControlDemo = new ReadJson();
+    //    swingControlDemo.showEventDemo();
         JSONObject file = new JSONObject();
         file.put("Full Name", "Ritu Sharma");
         file.put("Roll No.", new Integer(1704310046));
@@ -29,14 +48,105 @@ public class ReadJson {
         System.out.print(file.get("Tuition Fees"));
         pull();
 
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                createAndShowGUI();
+            }
+        });
+
+
     }
+    public static void createAndShowGUI(){
+
+        // Create the basic frame
+        JFrame frame = new JFrame("Layout Demo");
+
+        // Create a top panel
+        JPanel top = new JPanel();
+        frame.getContentPane().add(top, BorderLayout.PAGE_START);
+
+        // Create a middle-left panel
+        JPanel left = new JPanel();
+        left.setBackground(Color.yellow);
+        frame.getContentPane().add(left, BorderLayout.LINE_START);
+
+        // Create a center panel
+        JPanel center = new JPanel(new BorderLayout());
+        frame.getContentPane().add(center, BorderLayout.CENTER);
+
+        // Create a middle-right panel
+        JPanel right = new JPanel();
+        frame.getContentPane().add(right, BorderLayout.LINE_END);
+
+        // Create a bottom panel
+        JPanel bottom = new JPanel();
+        frame.getContentPane().add(bottom, BorderLayout.PAGE_END);
+
+        // Show the Frame
+        frame.pack();
+        frame.setSize(new Dimension(800, 700));
+        frame.setVisible(true);
+    }
+
+
+
+
+
+
+
+    public void createComponents(){
+        characters = new JLabel("name");
+        allies = new JLabel ("allies");
+        layout();
+
+      //  createComponents();
+    }
+    public void layout(){
+        JFrame frame = new JFrame("Vehicle Window");
+        JPanel Panel2 = new JPanel(new GridLayout(3, 1));
+        Panel2.add(characters);
+        Panel2.add(allies);
+        frame.getContentPane().add(Panel2);
+        frame.setSize(800, 700);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        createComponents();
+    }
+
+   /* private void prepareGUI(){
+        mainFrame = new JFrame("Characters!");
+        mainFrame.setSize(WIDTH,HEIGHT);
+        mainFrame.setLayout(new GridLayout(3,1));
+
+        characters = new JLabel("name", JLabel.NORTH);
+        allies  = new JLabel("allies", JLabel.NORTH);
+
+      controlPanel = new JPanel();
+      controlPanel.setLayout(new GridLayout(3,1));
+
+      mainFrame.setVisible(true);
+    }
+
+    private void showEventDemo(){
+        JButton nextButton = new JButton("Next");
+        JButton previousButton = new JButton("Previous");
+        nextButton.setActionCommand("Next");
+        previousButton.setActionCommand("Previous");
+
+        mainFrame.add(nextButton);
+        mainFrame.add(previousButton);
+        mainFrame.add(characters);
+        mainFrame.add(allies);
+        mainFrame.add(controlPanel);
+        mainFrame.setVisible(true);
+
+    }*/
 
     public static void pull() throws ParseException {
         String output = "abc";
         String totlaJson="";
         try {
 
-            URL url = new URL("https://pokeapi.co/api/v2/pokemon/ditto");
+            URL url = new URL("https://last-airbender-api.fly.dev/api/v1/characters");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
@@ -68,14 +178,51 @@ public class ReadJson {
 
         JSONParser parser = new JSONParser();
         //System.out.println(str);
-        org.json.simple.JSONObject jsonObject = (org.json.simple.JSONObject) parser.parse(totlaJson);
-        System.out.println(jsonObject);
+        org.json.simple.JSONArray jsonArray = (org.json.simple.JSONArray) parser.parse(totlaJson);
+        System.out.println(jsonArray);
 
         try {
 
-            String name = (String)jsonObject.get("name");
+            JSONObject secretTunnelGuy = (JSONObject) jsonArray.get(0);
+            System.out.println(secretTunnelGuy.get("name"));
+            JSONArray secretTunnelGuyAllies = (JSONArray) secretTunnelGuy.get("allies");
+            System.out.println(secretTunnelGuyAllies.get(0));
 
-            org.json.simple.JSONArray msg = (org.json.simple.JSONArray) jsonObject.get("starships");
+
+
+//            JSONObject secretTunnelGuy2 = (JSONObject) jsonArray.get(2);
+//            System.out.println(secretTunnelGuy2.get("name"));
+//
+//            JSONObject secretTunnelGuy3 = (JSONObject) jsonArray.get(3);
+//            System.out.println(secretTunnelGuy3.get("name"));
+//
+//            JSONObject secretTunnelGuy4 = (JSONObject) jsonArray.get(4);
+//            System.out.println(secretTunnelGuy4.get("name"));
+//
+//            JSONObject secretTunnelGuy5 = (JSONObject) jsonArray.get(5);
+//            System.out.println(secretTunnelGuy5.get("name"));
+//
+//            JSONObject secretTunnelGuy6 = (JSONObject) jsonArray.get(6);
+//            System.out.println(secretTunnelGuy6.get("name"));
+//
+//            JSONObject secretTunnelGuy7 = (JSONObject) jsonArray.get(7);
+//            System.out.println(secretTunnelGuy7.get("name"));
+
+            for(int x=0;x<jsonArray.size();x++) {
+                JSONObject secretTunnelGirl = (JSONObject) jsonArray.get(x);
+                System.out.println(secretTunnelGirl.get("name"));
+
+                for (int k = 0;k<jsonArray.size();k++ ){
+                    JSONArray secretTunnelGirlAllies = (JSONArray) secretTunnelGirl.get("allies");
+                    System.out.println(secretTunnelGirlAllies.get(k));
+                }
+
+            }
+
+/*
+            String name = (String)jsonArray.get("name");
+
+            org.json.simple.JSONArray msg = (org.json.simple.JSONArray) jsonArray.get("starships");
             int n =   msg.size(); //(msg).length();
             for (int i = 0; i < n; ++i) {
                 String test =(String) msg.get(i);
@@ -83,7 +230,7 @@ public class ReadJson {
                 // System.out.println(person.getInt("key"));
             }
           //  String name= (String)jsonObject.get("height");
-            System.out.println(name);
+            System.out.println(name);*/
         }
 
         catch (Exception e) {
